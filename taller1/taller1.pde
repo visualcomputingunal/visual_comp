@@ -4,14 +4,14 @@
 
 PImage original, img01, img02, img03, segm, gray, conv;
 PGraphics p1, p2, p3, p4, p5;
-int mode = 1,sel_img = 1, conv_option = 6, histogram[], gh[];
+int mode = 0,sel_img = 1, conv_option = 6, histogram[], gh[];
 color col;
 float[][] mask = { {0, 0, 0},
                    {0, 1, 0},
                    {0, 0, 0}};  // Initialize the convolution mask with identity in order to avoid changes in original images
 
 void setup(){
-  size(1000,650);
+  size(1000,500);
   background(200);
   
   img01 = loadImage("colors.jpg");
@@ -250,13 +250,13 @@ void histogram(){
   int hMax = max(histogram);
   int gMax = max(gh);
   
-  stroke(0);
+  stroke(255,0,0);
   for (int i = 0; i < 250; i +=2) {
     int which = int(map(i, 0, 250, 0, 255));
     int y = int(map(histogram[which], 0, hMax, 250, 0));
     line(i+400, 130+original.height, i+400, y+100);
   }
-  stroke(255,0,0);
+  stroke(0);
   for (int i = 0; i < 250; i +=2) {
     int which = int(map(i, 0, 250, 0, 255));
     int y = int(map(gh[which], 0, gMax, 250, 0));
