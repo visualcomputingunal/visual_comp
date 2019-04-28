@@ -4,12 +4,11 @@
 
 PImage original, img01, img02, img03, segm, gray, conv;
 PGraphics p1, p2, p3, p4, p5;
-int mode = 1,sel_img = 1, histogram[], gh[];
+int mode = 1,sel_img = 1, conv_option = 6, histogram[], gh[];
 color col;
 float[][] mask = { {0, 0, 0},
                    {0, 1, 0},
                    {0, 0, 0}};  // Initialize the convolution mask with identity in order to avoid changes in original images
-String title = "Image with Convolution";
 
 void setup(){
   size(1000,650);
@@ -36,37 +35,18 @@ void draw() {
     image(gray, 150+original.width,130);
   }else if(mode == 2){
     img_menu();
-    //convolution(modified);
+    conv_choices();
+    convolution(mask, conv);
+    image(conv, 150+original.width, 130);
   }else if(mode == 3){
     img_menu();
     histogram();
   }else if(mode == 4){
     img_menu();
-    image(segm, 150+original.width,130);
+    image(segm, 150+original.width, 130);
   }else if(mode == 5){
     video();
   }
-  
-  textSize(32);
-  String s1 = "Original Picture";
-  fill(0, 012, 153);
-  text(s1, 50, 50, 1000, 200);  // Text wraps within text box
-  String s2 = "Grayscale Image";
-  fill(0, 102, 153);
-  text(s2, 100 + original.width, 50, 1000, 200);  // Text wraps within text box
-  image(gray, 100 + original.width, 100);
-  for (int x = 0; x < original.width; x++) {
-    for (int y = 0; y < original.height; y++) {
-      color c = convolution(x, y, mask, original);
-      int loc = x + y * original.width;
-      conv.pixels[loc] = c;
-    }
-  }
-  conv.loadPixels();
-  fill(0, 102, 153);
-  text(title, 50, 120 + original.height, 1000, 200);  // Text wraps within text box
-  image(conv, 50, 160 + original.height);
-  conv.updatePixels();
 }
 
 void init(){
@@ -77,38 +57,37 @@ void init(){
   }else if(sel_img == 3){
     original = img03;
   }
+  
+  if(conv_option == 1){//Gaussian Blur
+    mask = new float [][]{{0.0625, 0.125, 0.0625},
+                          {0.1250, 0.250, 0.1250},
+                          {0.0625, 0.125, 0.0625}};
+  }else if(conv_option == 2){// Box Blur
+    mask = new float [][]{{0.11111, 0.11111, 0.11111},
+                          {0.11111, 0.11111, 0.11111},
+                          {0.11111, 0.11111, 0.11111}};
+  }else if(conv_option == 3){// Edge Detection 1
+    mask = new float [][]{{1, 0, -1},
+                          {0, 0, 0},
+                          {-1, 0, 1}};
+  }else if(conv_option == 4){// Edge Detection 2
+    mask = new float [][]{{-1, -1, -1},
+                          {-1, 8, -1},
+                          {-1, -1, -1}};
+  }else if(conv_option == 5){// Edge Detection 3
+    mask = new float [][]{{0, 1, 0},
+                          {1, -4, 1},
+                          {0, 1, 0}};
+  }else if(conv_option == 6){// Identity
+    mask = new float [][]{{0, 0, 0},
+                          {0, 1, 0},
+                          {0, 0, 0}};
+  }
+  
   grayScale(gray);
   histogram = getHistogram(original);
   gh = getHistogram(gray);
   segmentation(gh, gray, segm);
-}
-
-color convolution(int x, int y, float[][] matrix, PImage img)
-{
-  float rtotal = 0.0;
-  float gtotal = 0.0;
-  float btotal = 0.0;
-  
-  for (int i = 0; i < 3; i++){
-    for (int j= 0; j < 3; j++){
-      // What pixel are we testing
-      int pixel = x + i + (y + j) * img.width;
-      pixel = constrain(pixel, 0, img.pixels.length - 1);
-      // Make sure we haven't walked off our image, we could do better here
-      // Calculate the convolution
-      //println(matrix[i][j]);
-      rtotal += (red(img.pixels[pixel]) * matrix[i][j]);
-      gtotal += (green(img.pixels[pixel]) * matrix[i][j]);
-      btotal += (blue(img.pixels[pixel]) * matrix[i][j]);
-    }
-  }
-  
-  // Make sure RGB is within range
-  rtotal = constrain(rtotal, 0, 255);
-  gtotal = constrain(gtotal, 0, 255);
-  btotal = constrain(btotal, 0, 255);
-  // Return the resulting color
-  return color(rtotal, gtotal, btotal);
 }
 
 void mouseClicked() {
@@ -132,6 +111,20 @@ void mouseClicked() {
   }else if(mouseX > 750 && mouseX < 850 && mouseY > 35 && mouseY < 65) {
     mode = 5;
   }
+  
+  if(mouseX > 700 && mouseX < 800 && mouseY > 170 && mouseY < 200) {
+    conv_option = 1;
+  }else if(mouseX > 830 && mouseX < 930 && mouseY > 170 && mouseY < 200) {
+    conv_option = 2;
+  }else if(mouseX > 690 && mouseX < 810 && mouseY > 230 && mouseY < 260) {
+    conv_option = 3;
+  }else if(mouseX > 820 && mouseX < 940 && mouseY > 230 && mouseY < 260) {
+    conv_option = 4;
+  }else if(mouseX > 690 && mouseX < 810 && mouseY > 290 && mouseY < 320) {
+    conv_option = 5;
+  }else if(mouseX > 830 && mouseX < 930 && mouseY > 290 && mouseY < 320) {
+    conv_option = 6;
+  }
 }
 
 void img_menu(){
@@ -143,6 +136,24 @@ void img_menu(){
   text("Img 01", 26, 200);
   text("Img 02", 26, 260);
   text("Img 03", 26, 320);
+  noFill();
+}
+
+void conv_choices(){
+  fill(100,255,50);
+  rect(700, 170, 100, 30);
+  rect(830, 170, 100, 30);
+  rect(690, 230, 120, 30);
+  rect(820, 230, 120, 30);
+  rect(690, 290, 120, 30);
+  rect(830, 290, 100, 30);
+  fill(0);
+  text("Gaussian Blur", 710, 190);
+  text("Box Blur", 850, 190);
+  text("Edge Detection 1", 700, 250);
+  text("Edge Detection 2", 830, 250);
+  text("Edge Detection 3", 700, 310);
+  text("Identity", 855, 310);
   noFill();
 }
 
@@ -161,36 +172,6 @@ void navbar(){
   text("Video", 785, 55);
   noFill();
 }
-//Select mask according to pressed key
-void keyPressed(){
-  if(key == '1'){ //Gaussian Blur
-    mask = new float [][]{{0.0625, 0.125, 0.0625},
-                          {0.1250, 0.250, 0.1250},
-                          {0.0625, 0.125, 0.0625}};
-  }else if(key == '2'){ // Box Blur
-    mask = new float [][]{{0.11111, 0.11111, 0.11111},
-                          {0.11111, 0.11111, 0.11111},
-                          {0.11111, 0.11111, 0.11111}};
-  }else if(key == '3'){ //Edge Detection 1
-    mask = new float [][]{{1, 0, -1},
-                          {0, 0, 0},
-                          {-1, 0, 1}};
-  }else if(key == '4'){ //Edge Detection 2
-    mask = new float [][]{{-1, -1, -1},
-                          {-1, 8, -1},
-                          {-1, -1, -1}};
-    
-  }else if(key == '5'){ //Edge Detection 3
-    mask = new float [][]{{0, 1, 0},
-                          {1, -4, 1},
-                          {0, 1, 0}};
-
-  }else{
-    mask = new float [][]{{0, 0, 0},
-                          {0, 1, 0},
-                          {0, 0, 0}};
-  }
-}
 
 void grayScale(PImage modified){
   image(original, 100, 130);
@@ -201,6 +182,46 @@ void grayScale(PImage modified){
     modified.pixels[i] = color(g);    
   }
   modified.updatePixels();
+}
+
+void convolution(float[][] mask, PImage modified){
+  image(original, 100, 130);
+  modified.loadPixels();
+  for (int x = 0; x < original.width; x++) {
+    for (int y = 0; y < original.height; y++) {
+      color c = kernel(x, y, mask, original);
+      int loc = x + y * original.width;
+      modified.pixels[loc] = c;
+    }
+  }
+  modified.updatePixels();
+}
+
+color kernel(int x, int y, float[][] matrix, PImage base){
+  float rtotal = 0.0;
+  float gtotal = 0.0;
+  float btotal = 0.0;
+  
+  for (int i = 0; i < 3; i++){
+    for (int j= 0; j < 3; j++){
+      // What pixel are we testing
+      int pixel = x + i + (y + j) * base.width;
+      pixel = constrain(pixel, 0, base.pixels.length - 1);
+      // Make sure we haven't walked off our image, we could do better here
+      // Calculate the convolution
+      //println(matrix[i][j]);
+      rtotal += (red(base.pixels[pixel]) * matrix[i][j]);
+      gtotal += (green(base.pixels[pixel]) * matrix[i][j]);
+      btotal += (blue(base.pixels[pixel]) * matrix[i][j]);
+    }
+  }
+  
+  // Make sure RGB is within range
+  rtotal = constrain(rtotal, 0, 255);
+  gtotal = constrain(gtotal, 0, 255);
+  btotal = constrain(btotal, 0, 255);
+  // Return the resulting color
+  return color(rtotal, gtotal, btotal);
 }
 
 int[] getHistogram(PImage base){
