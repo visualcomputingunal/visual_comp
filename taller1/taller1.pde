@@ -2,8 +2,9 @@
 //Jhon Alexander Sedano Delgado
 //David Felipe Rico
 
-PImage img, gray, conv;
+PImage original, img01, img02, img03, segm, gray, conv;
 PGraphics p1, p2, p3, p4, p5;
+int mode = 1,sel_img = 1, histogram[], gh[];
 color col;
 float[][] mask = { {0, 0, 0},
                    {0, 1, 0},
@@ -11,41 +12,75 @@ float[][] mask = { {0, 0, 0},
 String title = "Image with Convolution";
 
 void setup(){
-  size(1000, 1000);
-  img = loadImage("colors.jpg");
-  gray = createImage(img.width, img.height, RGB);
-  conv = createImage(img.width, img.height, RGB);
+  size(1000,650);
+  background(200);
+  
+  img01 = loadImage("colors.jpg");
+  img02 = loadImage("optical.jpg");
+  img03 = loadImage("cat.jpg");
+  img01.resize(250,250);
+  img02.resize(250,250);
+  img03.resize(250,250);
+  gray = createImage(250, 250, RGB);
+  conv = createImage(250, 250, RGB);
+  segm = createImage(250, 250, RGB);
 
 }
 
 void draw() {
+  navbar();
+  init();
+  
+  if(mode == 1){
+    img_menu();
+    image(gray, 150+original.width,130);
+  }else if(mode == 2){
+    img_menu();
+    //convolution(modified);
+  }else if(mode == 3){
+    img_menu();
+    histogram();
+  }else if(mode == 4){
+    img_menu();
+    image(segm, 150+original.width,130);
+  }else if(mode == 5){
+    video();
+  }
+  
   textSize(32);
   String s1 = "Original Picture";
   fill(0, 012, 153);
   text(s1, 50, 50, 1000, 200);  // Text wraps within text box
-  image(img, 50, 100);
-  loadPixels();
-  for (int i = 0; i < img.pixels.length; i++){ 
-    color c = img.pixels[i];
-    int g = (int)(blue(c) + green(c) + red(c)) / 3;
-    gray.pixels[i] = color(g);    
-  } 
   String s2 = "Grayscale Image";
   fill(0, 102, 153);
-  text(s2, 100 + img.width, 50, 1000, 200);  // Text wraps within text box
-  image(gray, 100 + img.width, 100);
-  for (int x = 0; x < img.width; x++) {
-    for (int y = 0; y < img.height; y++) {
-      color c = convolution(x, y, mask, img);
-      int loc = x + y * img.width;
+  text(s2, 100 + original.width, 50, 1000, 200);  // Text wraps within text box
+  image(gray, 100 + original.width, 100);
+  for (int x = 0; x < original.width; x++) {
+    for (int y = 0; y < original.height; y++) {
+      color c = convolution(x, y, mask, original);
+      int loc = x + y * original.width;
       conv.pixels[loc] = c;
     }
   }
   conv.loadPixels();
   fill(0, 102, 153);
-  text(title, 50, 120 + img.height, 1000, 200);  // Text wraps within text box
-  image(conv, 50, 160 + img.height);
+  text(title, 50, 120 + original.height, 1000, 200);  // Text wraps within text box
+  image(conv, 50, 160 + original.height);
   conv.updatePixels();
+}
+
+void init(){
+  if(sel_img == 1){
+    original = img01;
+  }else if(sel_img == 2){
+    original = img02;
+  }else if(sel_img == 3){
+    original = img03;
+  }
+  grayScale(gray);
+  histogram = getHistogram(original);
+  gh = getHistogram(gray);
+  segmentation(gh, gray, segm);
 }
 
 color convolution(int x, int y, float[][] matrix, PImage img)
@@ -74,6 +109,57 @@ color convolution(int x, int y, float[][] matrix, PImage img)
   btotal = constrain(btotal, 0, 255);
   // Return the resulting color
   return color(rtotal, gtotal, btotal);
+}
+
+void mouseClicked() {
+  background(200);
+  if(mouseX > 20 && mouseX < 70 && mouseY > 170 && mouseY < 220) {
+    sel_img = 1;
+  }else if(mouseX > 20 && mouseX < 70 && mouseY > 230 && mouseY < 280) {
+    sel_img = 2;
+  }else if(mouseX > 20 && mouseX < 70 && mouseY > 290 && mouseY < 340) {
+    sel_img = 3;
+  }
+  
+  if(mouseX > 150 && mouseX < 250 && mouseY > 35 && mouseY < 65) {
+    mode = 1;
+  }else if(mouseX > 300 && mouseX < 400 && mouseY > 35 && mouseY < 65) {
+    mode = 2;
+  }else if(mouseX > 450 && mouseX < 550 && mouseY > 35 && mouseY < 65) {
+    mode = 3;
+  }else if(mouseX > 600 && mouseX < 700 && mouseY > 35 && mouseY < 65) {
+    mode = 4;
+  }else if(mouseX > 750 && mouseX < 850 && mouseY > 35 && mouseY < 65) {
+    mode = 5;
+  }
+}
+
+void img_menu(){
+  fill(255,0,0);
+  rect(20, 170, 50, 50);
+  rect(20, 230, 50, 50);
+  rect(20, 290, 50, 50);
+  fill(0);
+  text("Img 01", 26, 200);
+  text("Img 02", 26, 260);
+  text("Img 03", 26, 320);
+  noFill();
+}
+
+void navbar(){
+  fill(50,100,255);
+  rect(150, 35, 100, 30);
+  rect(300, 35, 100, 30);
+  rect(450, 35, 100, 30);
+  rect(600, 35, 100, 30);
+  rect(750, 35, 100, 30);
+  fill(0);
+  text("Gray Scale", 165, 55);
+  text("Convolution", 315, 55);
+  text("Histogram", 470, 55);
+  text("Segmentation", 610, 55);
+  text("Video", 785, 55);
+  noFill();
 }
 //Select mask according to pressed key
 void keyPressed(){
@@ -104,4 +190,76 @@ void keyPressed(){
                           {0, 1, 0},
                           {0, 0, 0}};
   }
+}
+
+void grayScale(PImage modified){
+  image(original, 100, 130);
+  modified.loadPixels();
+  for (int i = 0; i < original.pixels.length; i++){ 
+    color c = original.pixels[i];
+    int g = (int)(blue(c)+green(c)+red(c))/3;
+    modified.pixels[i] = color(g);    
+  }
+  modified.updatePixels();
+}
+
+int[] getHistogram(PImage base){
+  int[] gh = new int[256];
+  
+  for (int i = 0; i < 250; i++) {
+    for (int j = 0; j < 250; j++) {
+      int bright = int(brightness(base.get(i, j)));
+      gh[bright]++;
+    }
+  }
+  return gh;
+}
+
+void histogram(){
+  image(original, 100, 130);
+  for (int i = 0; i < 250; i++) {
+    for (int j = 0; j < 250; j++) {
+      int bright = int(brightness(original.get(i, j)));
+      int gbright = int(brightness(gray.get(i, j)));
+      histogram[bright]++;
+      gh[gbright]++;
+    }
+  }
+  
+  int hMax = max(histogram);
+  int gMax = max(gh);
+  
+  stroke(0);
+  for (int i = 0; i < 250; i +=2) {
+    int which = int(map(i, 0, 250, 0, 255));
+    int y = int(map(histogram[which], 0, hMax, 250, 0));
+    line(i+400, 130+original.height, i+400, y+100);
+  }
+  stroke(255,0,0);
+  for (int i = 0; i < 250; i +=2) {
+    int which = int(map(i, 0, 250, 0, 255));
+    int y = int(map(gh[which], 0, gMax, 250, 0));
+    line(i+700, 130+original.height, i+700, y+130);
+  }
+  stroke(0);
+}
+
+void segmentation(int[] hstg, PImage base, PImage modified){
+  float range = max(hstg)*0.3;
+  
+  base.loadPixels();
+  modified.loadPixels();
+  
+  for(int x = 0; x < base.width; x++){
+    for(int y = 0;y < base.height; y++){
+      int pos = x + y*base.width;
+      if(brightness(base.pixels[pos]) > range) modified.pixels[pos] = color(255);
+      else modified.pixels[pos] = color(0);
+    }
+  }
+  modified.updatePixels();
+}
+
+void video(){
+
 }
