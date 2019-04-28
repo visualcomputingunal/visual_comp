@@ -2,7 +2,7 @@
 //Jhon Alexander Sedano Delgado
 //David Felipe Rico
 
-PImage original, img01, img02, img03, segm, gray, conv;
+PImage original, img01, img02, img03, segm, gray, conv, gif;
 PGraphics p1, p2, p3, p4, p5;
 int mode = 0,sel_img = 1, conv_option = 6, histogram[], gh[];
 color col;
@@ -14,38 +14,43 @@ void setup(){
   size(1000,500);
   background(200);
   
-  img01 = loadImage("colors.jpg");
-  img02 = loadImage("optical.jpg");
-  img03 = loadImage("cat.jpg");
+  img01 = loadImage("cat.jpg");
+  img02 = loadImage("colors.jpg");
+  img03 = loadImage("optical.jpg");
   img01.resize(250,250);
   img02.resize(250,250);
   img03.resize(250,250);
   gray = createImage(250, 250, RGB);
   conv = createImage(250, 250, RGB);
   segm = createImage(250, 250, RGB);
-
+  
+  frameRate(60);
 }
 
 void draw() {
-  navbar();
   init();
+  navbar();
   
   if(mode == 1){
     img_menu();
+    image(original, 100, 130);
     image(gray, 150+original.width,130);
   }else if(mode == 2){
     img_menu();
+    image(original, 100, 130);
     conv_choices();
     convolution(mask, conv);
     image(conv, 150+original.width, 130);
   }else if(mode == 3){
     img_menu();
+    image(original, 100, 130);
     histogram();
   }else if(mode == 4){
     img_menu();
+    image(original, 100, 130);
     image(segm, 150+original.width, 130);
-  }else if(mode == 5){
-    video();
+  }else{
+    image(original, 100, 130);
   }
 }
 
@@ -108,8 +113,6 @@ void mouseClicked() {
     mode = 3;
   }else if(mouseX > 600 && mouseX < 700 && mouseY > 35 && mouseY < 65) {
     mode = 4;
-  }else if(mouseX > 750 && mouseX < 850 && mouseY > 35 && mouseY < 65) {
-    mode = 5;
   }
   
   if(mouseX > 700 && mouseX < 800 && mouseY > 170 && mouseY < 200) {
@@ -163,18 +166,15 @@ void navbar(){
   rect(300, 35, 100, 30);
   rect(450, 35, 100, 30);
   rect(600, 35, 100, 30);
-  rect(750, 35, 100, 30);
   fill(0);
   text("Gray Scale", 165, 55);
   text("Convolution", 315, 55);
   text("Histogram", 470, 55);
   text("Segmentation", 610, 55);
-  text("Video", 785, 55);
   noFill();
 }
 
 void grayScale(PImage modified){
-  image(original, 100, 130);
   modified.loadPixels();
   for (int i = 0; i < original.pixels.length; i++){ 
     color c = original.pixels[i];
@@ -185,7 +185,6 @@ void grayScale(PImage modified){
 }
 
 void convolution(float[][] mask, PImage modified){
-  image(original, 100, 130);
   modified.loadPixels();
   for (int x = 0; x < original.width; x++) {
     for (int y = 0; y < original.height; y++) {
@@ -237,9 +236,8 @@ int[] getHistogram(PImage base){
 }
 
 void histogram(){
-  image(original, 100, 130);
-  for (int i = 0; i < 250; i++) {
-    for (int j = 0; j < 250; j++) {
+  for (int i = 0; i < original.width; i++) {
+    for (int j = 0; j < original.height; j++) {
       int bright = int(brightness(original.get(i, j)));
       int gbright = int(brightness(gray.get(i, j)));
       histogram[bright]++;
@@ -251,22 +249,22 @@ void histogram(){
   int gMax = max(gh);
   
   stroke(255,0,0);
-  for (int i = 0; i < 250; i +=2) {
-    int which = int(map(i, 0, 250, 0, 255));
-    int y = int(map(histogram[which], 0, hMax, 250, 0));
+  for (int i = 0; i < original.width; i +=2) {
+    int which = int(map(i, 0, original.width, 0, 255));
+    int y = int(map(histogram[which], 0, hMax, original.height, 0));
     line(i+400, 130+original.height, i+400, y+100);
   }
   stroke(0);
-  for (int i = 0; i < 250; i +=2) {
-    int which = int(map(i, 0, 250, 0, 255));
-    int y = int(map(gh[which], 0, gMax, 250, 0));
+  for (int i = 0; i < original.width; i +=2) {
+    int which = int(map(i, 0, original.width, 0, 255));
+    int y = int(map(gh[which], 0, gMax, original.height, 0));
     line(i+700, 130+original.height, i+700, y+130);
   }
-  stroke(0);
+  noStroke();
 }
 
 void segmentation(int[] hstg, PImage base, PImage modified){
-  float range = max(hstg)*0.3;
+  float range = (max(hstg)+min(hstg))*0.08;
   
   base.loadPixels();
   modified.loadPixels();
@@ -279,8 +277,4 @@ void segmentation(int[] hstg, PImage base, PImage modified){
     }
   }
   modified.updatePixels();
-}
-
-void video(){
-
 }
