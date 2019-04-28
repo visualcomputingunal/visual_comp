@@ -46,6 +46,8 @@ Complete la tabla:
    El unico problema que se tuvo al momento de implementar estas máscaras es que los valores de las matrices al estar en formato de fracción hacian que la imagen se viera negra, por lo tanto, se procedio a cambiar los valores por su equivalente en decimal para que mostrara cada uno de los efectos.
 
    Para poder ver cada una de las versiones de la imagen cuando se les aplica la convolución, basta con presionar la tecla que se muestra en parentesis en el listado mencionado previamente.
+3. Se desplegaron dos histogramas, uno con la imagen original (el de color rojo) y otro con la imagen en escala de grises(de de color oscuro), esta ultima para hacer la segmentacion. Se utilizo el metodo `brightness()` para conseguir el valor de color de cada pixel y poder formar asi el histograma.
+4. Se utilizo el histograma de la imagen original a escala de grises para hacer la segmentacion, esto porque, es mas sencillo tomar el valor del brightness en una imagen a escala de grises, y ademas en dicho histograma puden verse mejor los picos del histograma.
    
 ## Entrega
 
