@@ -254,13 +254,19 @@ void histogram(){
     int y = int(map(histogram[which], 0, hMax, original.height, 0));
     line(i+400, 130+original.height, i+400, y+100);
   }
+  textSize(15);
+  text("Original image's histogram",425,400);
   stroke(0);
   for (int i = 0; i < original.width; i +=2) {
     int which = int(map(i, 0, original.width, 0, 255));
     int y = int(map(gh[which], 0, gMax, original.height, 0));
     line(i+700, 130+original.height, i+700, y+130);
   }
+  text("Gray scale image's histogram",720,400);
+  textSize(12);
   noStroke();
+  
+  
 }
 
 void segmentation(int[] hstg, PImage base, PImage modified){
