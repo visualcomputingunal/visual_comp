@@ -53,10 +53,10 @@ Complete la tabla:
 
 5. Por ultimo, para el video se muestran 4 versiones:
 
-   *Original
-   *Difuminado(Blur)
-   *Version con detección de bordes(Edged)
-   *Versión en escala de grises
+   * Original
+   * Difuminado(Blur)
+   * Version con detección de bordes(Edged)
+   * Versión en escala de grises
 
    Se obtiene un framerate entre 38 y 42 cuadros por segundo(FPS) 
    
