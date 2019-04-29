@@ -50,6 +50,15 @@ Complete la tabla:
 3. Se desplegaron dos histogramas, uno con la imagen original (el de color rojo) y otro con la imagen en escala de grises(de color oscuro), esta ultima para hacer la segmentacion. Se utilizó el metodo `brightness()` para conseguir el valor de color de cada pixel y poder formar asi el histograma.
 
 4. Se utilizó el histograma de la imagen original a escala de grises para hacer la segmentación, esto porque, es mas sencillo tomar el valor del brightness en una imagen a escala de grises, y ademas en dicho histograma puden verse mejor los picos del histograma.
+
+5. Por ultimo, para el video se muestran 4 versiones:
+
+   *Original
+   *Difuminado(Blur)
+   *Version con detección de bordes(Edged)
+   *Versión en escala de grises
+
+   Se obtiene un framerate entre 38 y 42 cuadros por segundo(FPS) 
    
 ## Entrega
 
