@@ -4,7 +4,7 @@
 
 import processing.video.*;  
 Movie myMovie;
-PGraphics colorPG, gsPG, edgedPG, blurredPG;
+PGraphics originalPG, gsPG, edgedPG, blurredPG;
 PImage gsMovie, edgedMovie, blurredMovie;
 
 int w, h;
@@ -34,7 +34,7 @@ void setup() {
   edgedMovie = createImage(w, h, RGB);
   blurredMovie = createImage(w, h, RGB);
   
-  colorPG = createGraphics(w, h);
+  originalPG = createGraphics(w, h);
   gsPG = createGraphics(w, h);
   blurredPG = createGraphics(w, h);
   edgedPG = createGraphics(w, h);
@@ -44,11 +44,11 @@ void draw() {
   textSize(32);
   fill(0);
   
-  colorPG.beginDraw();
-  colorPG.image(myMovie, 100, 100);
-  colorPG.endDraw();
+  originalPG.beginDraw();
+  originalPG.image(myMovie, 100, 100);
+  originalPG.endDraw();
   text(s1, 100, 80);
-  image(colorPG, 0, 0);
+  image(originalPG, 0, 0);
   
   blurredPG.beginDraw();
   conv(blur, myMovie, 1);
@@ -69,7 +69,7 @@ void draw() {
   gsPG.image(gsMovie, 0, 0);
   gsPG.endDraw();
   text(s4, 800, 380);
-  image(gsPG, 800,400);
+  image(gsPG, 800, 400);
   
   println(frameRate);
 }
@@ -82,7 +82,7 @@ void grayScale(PImage original){
   gsMovie.loadPixels();
   for (int i = 0; i < original.pixels.length; i++){ 
     color c = original.pixels[i];
-    int g = (int)(blue(c)+green(c)+red(c))/3;
+    int g = (int)(blue(c) + green(c) + red(c)) / 3;
     gsMovie.pixels[i] = color(g);  
     
   }
@@ -92,26 +92,23 @@ void conv(float[][] mask, PImage original, int type){
   if(type == 1){
     blurredMovie = original.copy();
     blurredMovie.loadPixels();
-    for (int x = 0; x < original.width; x++) {
-      for (int y = 0; y < original.height; y++) {
-        color c = kernel(x, y, mask, original);
-        int loc = x + y * original.width;
-        blurredMovie.pixels[loc] = c;
-      }
-    }
-    blurredMovie.updatePixels();
-  }else{
+  }else{ 
     edgedMovie = original.copy();
     edgedMovie.loadPixels();
-    for (int x = 0; x < original.width; x++) {
-      for (int y = 0; y < original.height; y++) {
-        color c = kernel(x, y, mask, original);
-        int loc = x + y * original.width;
+  }
+  for (int x = 0; x < original.width; x++) {
+    for (int y = 0; y < original.height; y++) {
+      color c = kernel(x, y, mask, original);
+      int loc = x + y * original.width;
+      if(type == 1){
+        blurredMovie.pixels[loc] = c;
+      }else{
         edgedMovie.pixels[loc] = c;
       }
     }
-    edgedMovie.updatePixels();
   }
+  blurredMovie.updatePixels();
+  edgedMovie.updatePixels();
 }
 
 color kernel(int x, int y, float[][] matrix, PImage base) {
@@ -126,7 +123,6 @@ color kernel(int x, int y, float[][] matrix, PImage base) {
       pixel = constrain(pixel, 0, base.pixels.length - 1);
       // Make sure we haven't walked off our image, we could do better here
       // Calculate the convolution
-      //println(matrix[i][j]);
       rtotal += (red(base.pixels[pixel]) * matrix[i][j]);
       gtotal += (green(base.pixels[pixel]) * matrix[i][j]);
       btotal += (blue(base.pixels[pixel]) * matrix[i][j]);
