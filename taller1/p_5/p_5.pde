@@ -4,7 +4,7 @@
 
 import processing.video.*;  
 Movie myMovie;
-PGraphics colorPG, gsPG, edgedPG, blurredPG, fr;
+PGraphics colorPG, gsPG, edgedPG, blurredPG;
 PImage gsMovie, edgedMovie, blurredMovie;
 
 int w, h;
@@ -38,7 +38,6 @@ void setup() {
   gsPG = createGraphics(w, h);
   blurredPG = createGraphics(w, h);
   edgedPG = createGraphics(w, h);
-  fr = createGraphics(30,30);
 }
 
 void draw() {
