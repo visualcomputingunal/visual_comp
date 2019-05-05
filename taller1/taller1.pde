@@ -8,6 +8,7 @@ Movie myMovie;
 PImage original, img01, img02, img03, segm, gray, conv, video;
 PGraphics originalPG, modifiedPG;
 int mode = 0,sel_img = 1, conv_option = 6, vid_option = 0, histogram[], gh[];
+long wait = 300, lastTime;
 float[][] mask = { {0, 0, 0},
                    {0, 1, 0},
                    {0, 0, 0}};  // Initialize the convolution mask with identity in order to avoid changes in original images

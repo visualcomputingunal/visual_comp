@@ -5,7 +5,20 @@ void video(float[][] mask, PImage modified){
   }else{
     convolution(mask, modified, false);
   }
-  println(frameRate);
+  
+  if(millis()-lastTime > wait){
+    textSize(20);
+    fill(200);
+    noStroke();
+    rect(575,380,200,30);
+    fill(0);
+    text("FPS: "+frameRate, 600, 400);
+    print(frameRate);
+    noFill();
+    textSize(12);
+    stroke(0);
+    lastTime = millis();
+  }
 }
 
 void movieEvent(Movie m) { 

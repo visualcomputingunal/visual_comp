@@ -18,7 +18,7 @@ void histogram(){
   rect(424,385,510,20);
   fill(0);
   stroke(255,0,0);
-  for (int i = 0; i < original.width; i +=2) {
+  for (int i = 0; i < original.width; i += 2) {
     int which = int(map(i, 0, original.width, 0, 255));
     int y = int(map(histogram[which], 0, hMax, original.height, 0));
     line(i+400, 130+original.height, i+400, y+100);

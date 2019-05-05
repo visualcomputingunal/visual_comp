@@ -9,13 +9,19 @@ void segmentation(int[] hstg, PImage base, PImage modified){
     }
   }
   
-  float range = (max(hstg)+min(hstg))*0.08;
+  float lBound = bright - 10;
+  float uBound = bright + 10;
+  
+  if(lBound < 0) lBound = 0;
+  if(uBound > 250) uBound = 250;
+  
   base.loadPixels();
   modified.loadPixels();
   for(int x = 0; x < base.width; x++){
     for(int y = 0;y < base.height; y++){
       int pos = x + y*base.width;
-      if(brightness(base.pixels[pos]) >= range) modified.pixels[pos] = color(255);
+      int b = int(brightness(base.pixels[pos]));
+      if(b >= lBound && b <= uBound) modified.pixels[pos] = color(255);
       else modified.pixels[pos] = color(0);
     }
   }
