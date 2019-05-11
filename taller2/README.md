@@ -28,7 +28,7 @@ Complete la tabla:
 | Escalera Imposible        |Paradojica   | https://gpuzzles.com/optical-illusions/paradox/             |                       | 
 | Espiral rotatoria         |Movimiento   | http://www.elisaribau.com/ilusiones-opticas-te-sorprenderan/|                       |
 | Circulos Irregulares      |Geometrica   | https://www.theclinic.cl/2014/01/10/pa-la-caga-21-extraordinarias-ilusiones-opticas-que-te-hara-alucinar-sin-necesidad-de-drogas/| 
-| Ajedrez Circular          |Geometrica   | http://davidquintanapantoja32.blogspot.com/2009/08/cool-optical-illusions.html|Movimiento de mouse|
+| Bulging Checkerboard          |Geometrica   | https://michaelbach.de/ot/ang-KitaokaBulge/index.html||
 
 2. Describa brevememente las referencias estudiadas y los posibles temas en los que le gustaría profundizar
 
