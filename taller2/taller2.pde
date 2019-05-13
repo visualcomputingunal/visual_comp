@@ -1,4 +1,4 @@
-PGraphics pg, PgSchroder, PgWorm;
+PGraphics pg, PgSchroder, PgWorm, PgCircles;
 long wait = 100, lastTime;
 float slx, sly;
 color c1, c2, cs1, cs2;
@@ -10,6 +10,7 @@ void setup(){
   pg = createGraphics(650, 400);
   PgSchroder = createGraphics(680, 390);
   PgWorm = createGraphics(600, 500);
+  PgCircles = createGraphics(580, 580);
   
   c1 = color(250,200,200);
   c2 = color(0,50,0);
@@ -26,9 +27,12 @@ void draw() {
   //ImpossibleStair();
   //image(pg, 9, 30);
   
-  Worm();
-  slide();
-  image(PgWorm, 10, 10);
+  //Worm();
+  //slide();
+  //image(PgWorm, 10, 10);
+  
+  IrregularCircles();
+  image(PgCircles,10,10);
 }
 
 void init(){
