@@ -1,4 +1,4 @@
-PGraphics pg, PgSchroder, PgWorm, PgCircles;
+PGraphics pg, PgSchroder, PgWorm, PgCircles, PGBul;
 long wait = 100, lastTime;
 float slx, sly;
 color c1, c2, cs1, cs2;
@@ -9,6 +9,7 @@ void setup(){
   
   pg = createGraphics(650, 400);
   PgSchroder = createGraphics(680, 390);
+  PGBul = createGraphics(420, 420);
   PgWorm = createGraphics(600, 500);
   PgCircles = createGraphics(580, 580);
   
@@ -20,7 +21,7 @@ void setup(){
 }
 
 void draw() {
-  init();
+  //init();
   //Schroder();
   //image(PgSchroder, 10, 10);
   
@@ -31,8 +32,10 @@ void draw() {
   //slide();
   //image(PgWorm, 10, 10);
   
-  IrregularCircles();
-  image(PgCircles,10,10);
+  //IrregularCircles();
+  //image(PgCircles,10,10);
+  Bulging();
+  
 }
 
 void init(){
@@ -44,7 +47,7 @@ void init(){
     lastTime = millis();
   }
 }
-
+/*
 void mouseDragged() {
   if(mouseX < 625) slx = 625; if(mouseX > 825) slx = 825;
   if(mouseX < slx+10 && mouseX > slx-10 && mouseY < sly+15 && mouseY > sly-15
@@ -74,4 +77,4 @@ void mousePressed(){
       cs1 = c1; cs2 = c2;
     }
   }
-}
+}*/
