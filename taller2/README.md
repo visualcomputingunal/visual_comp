@@ -23,15 +23,19 @@ Complete la tabla:
 
 | Ilusión                   | Categoria   | Referencia                                                  | Tipo de interactividad|
 |---------------------------|-------------|-------------------------------------------------------------|-----------------------|
-| Worm Illusion             |Movimiento   | https://www.youtube.com/watch?v=dSkfs4GNggY                 |Cambio de color| 
-| Escaleras de Schroeder    |Ambigua      | http://www.ilusionario.es/PERCEPCION/fig_revers.htm         |                       |                                          |                       |
+| Worm Illusion             |Movimiento   | https://www.youtube.com/watch?v=dSkfs4GNggY                 |Cambio de color        | 
+| Escaleras de Schroeder    |Ambigua      | http://www.ilusionario.es/PERCEPCION/fig_revers.htm         |                       |       
 | Escalera Imposible        |Paradojica   | https://gpuzzles.com/optical-illusions/paradox/             |                       | 
-| Espiral rotatoria         |Movimiento   | http://www.elisaribau.com/ilusiones-opticas-te-sorprenderan/|                       |
-| Circulos Irregulares      |Geometrica   | https://www.theclinic.cl/2014/01/10/pa-la-caga-21-extraordinarias-ilusiones-opticas-que-te-hara-alucinar-sin-necesidad-de-drogas/| 
-| Bulging Checkerboard          |Geometrica   | https://michaelbach.de/ot/ang-KitaokaBulge/index.html||
+| Bulging Checkerboard      |Geometrica   | https://michaelbach.de/ot/ang-KitaokaBulge/index.html       |Intercambio de Colores y cantidad de cuadros                       |
 
 2. Describa brevememente las referencias estudiadas y los posibles temas en los que le gustaría profundizar
-
+   
+   Para el desarrollo de este taller se tuvieron en cuenta las recomendaciones mostradas en algunos de los enlaces que aparecen en la      tabla de la sección anterior, todas las cuatros ilusiones se desarrollaron desde cero y en cuanto a la parte técnica solo se utilizó    como referencia la documentación de Processing 3.
+   
+   En el caso de Worm Illusion fue necesario utilizar trigonometría para segmentar en anillos al gusano.
+   
+   Dada la forma en como se implementó La escalera imposible, nos gustaría profundizar en algun tipo de mecanismo que permita hacer        dibujos de este estilo sin tener que repetir tantas veces una misma instrucción, como lo fue vertex para este caso y curveVertex para    la circunferencia del gusano.
+   
 ## Entrega
 
 * Hacer [fork](https://help.github.com/articles/fork-a-repo/) de la plantilla. Plazo: 12/5/19 a las 24h.
