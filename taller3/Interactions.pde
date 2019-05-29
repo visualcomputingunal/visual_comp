@@ -1,3 +1,5 @@
+int x, y;
+
 void setPos(){
   // Grid position
   xPGgrid=600; yPGgrid=0; wPGgrid=600; hPGgrid=600;
