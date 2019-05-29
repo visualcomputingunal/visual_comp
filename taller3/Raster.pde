@@ -17,6 +17,6 @@ void Raster(){
 void triangleRaster() {
   pushStyle();
   stroke(255, 255, 0, 125);
-  point(round(node.location(v1).x()), round(node.location(v1).y()));
+  point(round(50), round(50));
   popStyle();
 }

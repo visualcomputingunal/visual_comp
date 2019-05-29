@@ -6,6 +6,7 @@ import nub.processing.*;
 PGraphics PGgrid, PGoptions;
 int xPGgrid, yPGgrid, wPGgrid, hPGgrid;
 int xPGoptions, yPGoptions, wPGoptions, hPGoptions;
+int xc, yc, wc, hc;
 Scene scene;
 Node node;
 Vector v1, v2, v3;
@@ -61,9 +62,6 @@ void drawTriangleHint() {
 
 void gridOptions(){
   PGoptions.beginDraw();
-    // Checkbox position and dimension
-    int xc=20, yc=300, wc=20, hc=20;
-    
     PGoptions.background(100);
     PGoptions.fill(255);
     PGoptions.stroke(0);
