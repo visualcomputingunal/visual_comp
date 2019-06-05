@@ -32,6 +32,13 @@ Complete la tabla:
 
 Describa los resultados obtenidos. En el caso de anti-aliasing describir las técnicas exploradas, citando las referencias.
 
+A medida que se aumenta la cantidad de cuadros en la malla, las aristas del triangulo se ven mejor definidas, esto es porque cada cuadro de la malla representa un pixel y al aumentar el numero de pixeles la imagen se ve mejor.
+
+Se puede elegir entre pintar cuadros o puntos. Se obtiene un mejor resultado cuando se pintan cuadros ya que el area de cada pixel mostrado en la malla queda completamente coloreada.
+
+Otra interacción que se puede utilizar es de cambiar la posicion de cualquier vector generando otro triangulo distinto.
+
+
 ## Entrega
 
-* Plazo: 2/6/19 a las 24h.
+* Plazo: 5/6/19 a las 24h.

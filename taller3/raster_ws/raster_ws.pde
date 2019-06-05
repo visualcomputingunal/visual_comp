@@ -12,13 +12,12 @@ TimingTask spinningTask;
 boolean yDirection;
 // scaling is a power of 2
 int n = 4;
-// triangle's vertices color
-color[] c = {color(255, 255, 0), color(0, 255, 255), color(255, 0, 255)};
+color[] c = {color(255, 255, 0, 125), color(0, 255, 255, 125), color(255, 0, 255, 125)};
 // 2. Hints
 boolean triangleHint = true;
 boolean gridHint = true;
 boolean debug = true;
-boolean squareCap = false;
+boolean square = false;
 // 3. Use FX2D, JAVA2D, P2D or P3D
 String renderer = P3D;
 // 4. Window dimension
@@ -95,14 +94,11 @@ void triangleRaster() {
       }
       
     }
-    
-    // last iteration and no pixel painted at all 
     if (i == boundary - 1 && repeat) {
       Vector v = v1;
       v1 = v2;
       v2 = v;
       i = -boundary;
-      // prevents from infinite cycle
       repeat = false;
     }
   }
@@ -110,11 +106,14 @@ void triangleRaster() {
   // here we convert v1 to illustrate the idea
   if (debug) {
     pushStyle();
-    setColor(color(c[1]));
+    stroke(c[1]);
+    fill(color(c[1]));
     drawPoint(floor(node.location(v1).x()), floor(node.location(v1).y()));
-    setColor(color(c[2]));
+    stroke(c[2]);
+    fill(color(c[2]));
     drawPoint(floor(node.location(v2).x()), floor(node.location(v2).y()));
-    setColor(color(c[0]));
+    stroke(c[0]);
+    fill(color(c[0]));
     drawPoint(floor(node.location(v3).x()), floor(node.location(v3).y()));
     popStyle();
   }
@@ -128,14 +127,14 @@ boolean belongsToTriangle(Vector p) {
   inside &= (w[2] = triangleArea(p, v3, v1)) >= 0; 
    
   if (inside) { 
-    color c = interpolateRGB(w);
+    color c = vectorRGB(w);
     stroke(c);
     fill(c);
     return inside;
   } 
   return false;
 }
-float triangleArea(Vector v1, Vector v2, Vector v3) 
+float triangleArea(Vector v1, Vector v2, Vector v3) //Parallelogram Method
 {   
     float v_one_x = node.location(v1).x();
     float v_one_y = node.location(v1).y();
@@ -146,8 +145,8 @@ float triangleArea(Vector v1, Vector v2, Vector v3)
     return ((v_one_x - v_two_x) * (v_three_y - v_two_y) - (v_one_y - v_two_y) * (v_three_x - v_two_x)); 
 }
 
-// Computes color of a vector in the triangle
-color interpolateRGB(float[] edge) {
+// Color of a vector in the triangle
+color vectorRGB(float[] edge) {
   float r = 0, g = 0, b = 0, 
     area = triangleArea(v1, v2, v3);
   for (int i = 0; i < 3; i++) {
@@ -199,7 +198,6 @@ void keyPressed() {
     debug = !debug;
   if (key == '+') {
     n = n < 7 ? n+1 : 2;
-    println(n);
     node.setScaling(width/pow( 2, n));
   }
   if (key == '-') {
@@ -216,18 +214,14 @@ void keyPressed() {
   if (key == 'y')
     yDirection = !yDirection;
   if (key == 'c')  // Draws squares instead of points
-    squareCap = !squareCap;
+    square = !square;
  
 }
 
 void drawPoint(float x, float y) {
-  if (squareCap) {
+  if (square) {
     noStroke();
     rect(x, y, 1, 1);
   } else
     point(x + 0.5, y + 0.5);
-}
-void setColor(color c) {
-  stroke(c);
-  fill(c);
 }
