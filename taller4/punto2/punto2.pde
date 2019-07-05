@@ -1,12 +1,12 @@
 PShape can;
 float angle;
-
+int xl = 320, yl = 450, zl=200;
 PShader lightShader;
 boolean diffuse = true;
 boolean vertex = true;
 
 void setup() {
-  size(640, 360, P3D);
+  size(640, 450, P3D);
   can = createCan(100, 200, 32);
   lightShader = loadShader("diffuse/lightfrag.glsl", "diffuse/lightvert.glsl");
 }
@@ -16,8 +16,7 @@ void draw() {
 
   shader(lightShader);
 
-  pointLight(255, 255, 255, width/2, height, 200);
-
+  pointLight(255, 255, 255, xl, yl, zl);
   translate(width/2, height/2);
   rotateY(angle);  
   shape(can);  
@@ -43,10 +42,23 @@ PShape createCan(float r, float h, int detail) {
 }
 
 void keyPressed() {
-  if (key == ' ') {
-    diffuse = !diffuse;
-  }else if (key == 'v' || key == 'V') vertex = true;
+  if(key == CODED){
+    if(keyCode == UP) yl+=20;
+    else if(keyCode == DOWN) yl-=20;
+    else if(keyCode == RIGHT) xl+=20;
+    else if(keyCode == LEFT) xl-=20;
+  }
+  
+  if(key == 'r' || key == 'R'){
+    xl=320; yl=450; zl=200;
+    diffuse=true; vertex=true;
+  }
+  
+  if (key == ' ') diffuse = !diffuse;
+  else if (key == 'v' || key == 'V') vertex = true;
   else if (key == 'p' || key == 'P') vertex = false;
+  else if(key == '+') zl +=10;
+  else if(key == '-') zl -=10;
   
   if(diffuse){
     if(vertex)
