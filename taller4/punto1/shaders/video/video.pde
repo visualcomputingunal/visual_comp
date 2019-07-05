@@ -74,32 +74,36 @@ void keyPressed() {
     else if (keyCode == DOWN) conv_option += 1;
     
     if(conv_option > 10)conv_option = 0;
-    else if(conv_option < 0);
-    
-    key = char(conv_option);
+    else if(conv_option < 0)conv_option = 10;
   }
+  if(key=='0' || key=='1' || key=='2' || key=='3' || key=='4' || key=='5' || key=='6'
+       || key=='7' || key=='8' || key=='9') conv_option = int(key);
+       
+  else if( key == 'o' || key == 'O') conv_option = 10;
   
-  if (key == '0' || conv_option == 0) {
+  if(conv_option == 0) {
     textureShader = loadShader("gaussianblur.glsl");
-  }else if(key == '1' || conv_option == 1){ //Edge detection 1
+  }else if(conv_option == 1){ //Edge detection 1
     textureShader = loadShader("edge1.glsl");
-  }else if(key == '2' || conv_option == 2){ //Edge detection 2
+  }else if(conv_option == 2){ //Edge detection 2
     textureShader = loadShader("edge2.glsl");
-  }else if(key == '3' || conv_option == 3){ //Edge detection 3
+  }else if(conv_option == 3){ //Edge detection 3
     textureShader = loadShader("edge3.glsl");
-  }else if(key == '4' || conv_option == 4){ 
+  }else if(conv_option == 4){ 
     textureShader = loadShader("boxblur.glsl");
-  }else if(key == '5' || conv_option == 5){ 
+  }else if(conv_option == 5){ 
     textureShader = loadShader("sharpen1.glsl");
-  }else if(key == '6' || conv_option == 6){ 
+  }else if(conv_option == 6){ 
     textureShader = loadShader("sharpen2.glsl");
-  }else if(key == '7' || conv_option == 7){ 
+  }else if(conv_option == 7){ 
     textureShader = loadShader("motionblur.glsl");
-  }else if(key == '8' || conv_option == 8){ 
+  }else if(conv_option == 8){ 
     textureShader = loadShader("emboss1.glsl");
-  }else if(key == '9' || conv_option == 9){ 
+  }else if(conv_option == 9){ 
     textureShader = loadShader("emboss2.glsl");
-  }else if(key == 'o' || key == 'O' || conv_option == 10){ //Normal
+  }else if(conv_option == 10){ //Normal
     textureShader = loadShader("original.glsl");
+  }else{
+    
   }
 }
