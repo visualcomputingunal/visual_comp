@@ -2,14 +2,14 @@ import processing.video.*;
 
 Movie myMovie;
 PImage img;
-PGraphics Menu;
+PGraphics Labels;
 PShape textureImg;
 PShader textureShader;
 int conv_option = 10;
 
 void setup() {
-  size(1300, 540, P2D);
-  Menu = createGraphics(142, 540);
+  size(1152, 600, P2D);
+  Labels = createGraphics(1152, 60);
   myMovie = new Movie(this, "video.mp4");
   myMovie.play();
   textureImg = createShape(myMovie, 1152, 540);
@@ -17,11 +17,9 @@ void setup() {
 }
 
 void draw() {
-  background(200);
-  menu();
-  image(Menu,1152,0);
   shader(textureShader);
   shape(textureImg);
+  labels();
 }
 
 PShape createShape(Movie tex,int x, int y) {
@@ -44,66 +42,81 @@ void movieEvent(Movie m) {
   m.read();
 }
 
-void menu(){
-  Menu.beginDraw();
-    Menu.background(200);
-    Menu.fill(50,100,255);
-    Menu.rect(10, 35, 120, 30);
-    Menu.fill(0);
-    Menu.text("Gaussian Blur", 25, 55);
+void labels(){
+  Labels.beginDraw();
+    Labels.background(0);
+    Labels.fill(0);
+    Labels.rect(0, 0, 1152, 60);
+    Labels.fill(255);
+    Labels.textSize(30);
     
-    if(conv_option == 0){
-      Menu.fill(0);
-      Menu.rect(10, 35, 120, 30);
-      Menu.fill(255);
-      Menu.text("Gaussian Blur", 25, 55);
-    }
-  Menu.endDraw();
-}
-
-void mouseClicked(){
-  if(mouseX > 1162 && mouseX < 1282 && mouseY > 35 && mouseY < 65) {
-    conv_option = 0;
-  }
-  keyPressed();
+    if(conv_option == 0)
+      Labels.text("Gaussian Blur (3x3)", 25, 40);
+    else if(conv_option == 1)
+      Labels.text("Box Blur (3x3)", 25, 40);
+    else if(conv_option == 2)
+      Labels.text("Motion Blur (9x9)", 25, 40);
+    else if(conv_option == 3)
+      Labels.text("Edge Detection 1 (3x3)", 25, 40);
+    else if(conv_option == 4)
+      Labels.text("Edge Detection 2 (3x3)", 25, 40);
+    else if(conv_option == 5)
+      Labels.text("Edge Detection 3 (3x3)", 25, 40);
+    else if(conv_option == 6)
+      Labels.text("Sharpen 1 (3x3)", 25, 40);
+    else if(conv_option == 7)
+      Labels.text("Sharpen 2 (3x3)", 25, 40);
+    else if(conv_option == 8)
+      Labels.text("Emboss 1 (3x3)", 25, 40);
+    else if(conv_option == 9)
+      Labels.text("Emboss 2 (5x5)", 25, 40);
+    else
+      Labels.text("Original", 25, 40);
+  Labels.endDraw();
+  image(Labels,0,540);
 }
 
 void keyPressed() {
   if (key == CODED){
-    if (keyCode == UP) conv_option -= 1;
-    else if (keyCode == DOWN) conv_option += 1;
+    if (keyCode == UP) conv_option += 1;
+    else if (keyCode == DOWN) conv_option -= 1;
     
     if(conv_option > 10)conv_option = 0;
     else if(conv_option < 0)conv_option = 10;
   }
-  if(key=='0' || key=='1' || key=='2' || key=='3' || key=='4' || key=='5' || key=='6'
-       || key=='7' || key=='8' || key=='9') conv_option = int(key);
-       
-  else if( key == 'o' || key == 'O') conv_option = 10;
   
-  if(conv_option == 0) {
+  if(key=='0' || conv_option == 0) {
+    conv_option = 0;
     textureShader = loadShader("gaussianblur.glsl");
-  }else if(conv_option == 1){ //Edge detection 1
-    textureShader = loadShader("edge1.glsl");
-  }else if(conv_option == 2){ //Edge detection 2
-    textureShader = loadShader("edge2.glsl");
-  }else if(conv_option == 3){ //Edge detection 3
-    textureShader = loadShader("edge3.glsl");
-  }else if(conv_option == 4){ 
+  }if(key=='1' || conv_option == 1){ 
+    conv_option = 1;
     textureShader = loadShader("boxblur.glsl");
-  }else if(conv_option == 5){ 
-    textureShader = loadShader("sharpen1.glsl");
-  }else if(conv_option == 6){ 
-    textureShader = loadShader("sharpen2.glsl");
-  }else if(conv_option == 7){ 
+  }if(key=='2' || conv_option == 2){ 
+    conv_option = 2;
     textureShader = loadShader("motionblur.glsl");
-  }else if(conv_option == 8){ 
+  }if(key=='3' || conv_option == 3){ //Edge detection 1
+    conv_option = 3;
+    textureShader = loadShader("edge1.glsl");
+  }if(key=='4' || conv_option == 4){ //Edge detection 2
+    conv_option = 4;
+    textureShader = loadShader("edge2.glsl");
+  }if(key=='5' || conv_option == 5){ //Edge detection 3
+    conv_option = 5;
+    textureShader = loadShader("edge3.glsl");
+  }if(key=='6' || conv_option == 6){ 
+    conv_option = 6;
+    textureShader = loadShader("sharpen1.glsl");
+  }if(key=='7' || conv_option == 7){ 
+    conv_option = 7;
+    textureShader = loadShader("sharpen2.glsl");
+  }if(key=='8' || conv_option == 8){ 
+    conv_option = 8;
     textureShader = loadShader("emboss1.glsl");
-  }else if(conv_option == 9){ 
+  }if(key=='9' || conv_option == 9){ 
+    conv_option = 9;
     textureShader = loadShader("emboss2.glsl");
-  }else if(conv_option == 10){ //Normal
+  }if(key=='r' || key=='R' ||  conv_option == 10){ //Normal
+    conv_option = 10;
     textureShader = loadShader("original.glsl");
-  }else{
-    
   }
 }
