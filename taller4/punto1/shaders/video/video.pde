@@ -1,7 +1,6 @@
 import processing.video.*;
 
 Movie myMovie;
-PImage img;
 PGraphics Labels;
 PShape textureImg;
 PShader textureShader;
@@ -19,6 +18,7 @@ void setup() {
 void draw() {
   shader(textureShader);
   shape(textureImg);
+  println(frameRate);
   labels();
 }
 
@@ -78,8 +78,8 @@ void labels(){
 
 void keyPressed() {
   if (key == CODED){
-    if (keyCode == UP) conv_option += 1;
-    else if (keyCode == DOWN) conv_option -= 1;
+    if (keyCode == RIGHT) conv_option += 1;
+    else if (keyCode == LEFT) conv_option -= 1;
     
     if(conv_option > 10)conv_option = 0;
     else if(conv_option < 0)conv_option = 10;
@@ -94,13 +94,13 @@ void keyPressed() {
   }if(key=='2' || conv_option == 2){ 
     conv_option = 2;
     textureShader = loadShader("motionblur.glsl");
-  }if(key=='3' || conv_option == 3){ //Edge detection 1
+  }if(key=='3' || conv_option == 3){
     conv_option = 3;
     textureShader = loadShader("edge1.glsl");
-  }if(key=='4' || conv_option == 4){ //Edge detection 2
+  }if(key=='4' || conv_option == 4){
     conv_option = 4;
     textureShader = loadShader("edge2.glsl");
-  }if(key=='5' || conv_option == 5){ //Edge detection 3
+  }if(key=='5' || conv_option == 5){
     conv_option = 5;
     textureShader = loadShader("edge3.glsl");
   }if(key=='6' || conv_option == 6){ 
@@ -115,7 +115,7 @@ void keyPressed() {
   }if(key=='9' || conv_option == 9){ 
     conv_option = 9;
     textureShader = loadShader("emboss2.glsl");
-  }if(key=='r' || key=='R' ||  conv_option == 10){ //Normal
+  }if(key=='r' || key=='R' ||  conv_option == 10){
     conv_option = 10;
     textureShader = loadShader("original.glsl");
   }

@@ -15,8 +15,8 @@ color kernel(int x, int y, float[][] matrix, PImage base){
   float gtotal = 0.0;
   float btotal = 0.0;
   
-  for (int i = 0; i < 3; i++){
-    for (int j= 0; j < 3; j++){
+  for (int i = 0; i < matrix[0].length; i++){
+    for (int j= 0; j < matrix[0].length; j++){
       // What pixel are we testing
       int pixel = x + i + (y + j) * base.width;
       pixel = constrain(pixel, 0, base.pixels.length - 1);
